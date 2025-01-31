@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solo Leveling Quest</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+        body {
+            background: #0a1428;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .quest-container {
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .quest-header {
+            background: rgba(10, 20, 40, 0.95);
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            border: 2px solid cyan;
+            border-bottom: none;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            text-align: center;
+        }
+
+        .quest-title {
+            color: cyan;
+            text-shadow: 0 0 10px cyan;
+            font-size: 24px;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .quest-box {
+            background: rgba(10, 20, 40, 0.95);
+            padding: 20px;
+            border-radius: 0 0 10px 10px;
+            border: 2px solid cyan;
+            border-top: none;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+
+        .quest-description {
+            text-align: center;
+            margin: 15px 0;
+            line-height: 1.4;
+        }
+
+        .goal {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+        }
+
+        .goal input {
+            width: 60px;
+            background: black;
+            color: cyan;
+            border: 1px solid cyan;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+
+        .goal input:disabled {
+            opacity: 0.5;
+            border-color: #00ff00;
+            cursor: not-allowed;
+        }
+
+        .time-left-box {
+            color: cyan;
+            border: 1px solid cyan;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-shadow: 0 0 8px cyan;
+            background: rgba(0, 255, 255, 0.1);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .time-left-box.completed {
+            border-color: #00ff00;
+            color: #00ff00;
+            text-shadow: 0 0 8px #00ff00;
+            background: rgba(0, 255, 0, 0.1);
+        }
+
+        .time-display {
+            font-size: 1.5em;
+            font-family: monospace;
+            letter-spacing: 2px;
+            margin: 10px 0;
+        }
+
+        .completed-message {
+            font-size: 1.2em;
+            font-weight: bold;
+            display: none;
+        }
+
+        .time-left-box.completed .time-display {
+            display: none;
+        }
+
+        .time-left-box.completed .completed-message {
+            display: block;
+            color: #00ff00;
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+
+        .time-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .complete-btn {
+            background: cyan;
+            color: black;
+            font-weight: bold;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .complete-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .complete-btn:hover:not(:disabled) {
+            background: white;
+            box-shadow: 0 0 15px cyan;
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background: rgba(10, 20, 40, 0.95);
+            padding: 25px;
+            border-radius: 10px;
+            border: 2px solid cyan;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            text-align: center;
+            max-width: 300px;
+            width: 90%;
+        }
+
+        .popup-message {
+            color: cyan;
+            font-size: 1.1em;
+            margin: 15px 0;
+        }
+
+        .popup-close {
+            background: cyan;
+            color: black;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .popup-close:hover {
+            background: white;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+            }
+
+            to {
+                text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .goal input {
+                width: 50px;
+            }
+
+            .quest-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="quest-container">
+        <div class="quest-header">
+            <h1 class="quest-title">QUESTINFO</h1>
+        </div>
+
+        <div class="quest-box">
+            <p class="quest-description">
+                DAILY QUEST - TRAIN TO BECOME A<br>
+                <strong>CALITIONI</strong> - IF THE DAILY QUEST REMAINS
+            </p>
+
+            <div class="goal">
+                <span>Push-ups</span>
+                <input type="number" id="pushups" min="0" max="100" value="0">
+                <span>/100</span>
+            </div>
+
+            <div class="goal">
+                <span>Sit-ups</span>
+                <input type="number" id="situps" min="0" max="100" value="0">
+                <span>/100</span>
+            </div>
+
+            <div class="goal">
+                <span>Squats</span>
+                <input type="number" id="squats" min="0" max="100" value="0">
+                <span>/100</span>
+            </div>
+
+            <div class="goal">
+                <span>Run</span>
+                <input type="number" id="run" min="0" max="10" value="0">
+                <span>/10KM</span>
+            </div>
+
+            <div class="time-left-box" id="timeBox">
+                <div class="time-label">TIME LEFT TO COMPLETE</div>
+                <div class="time-display" id="timeLeft">00:00:00</div>
+                <div class="completed-message">DAILY QUEST COMPLETED!</div>
+                <div class="time-label">HOURS : MINUTES : SECONDS</div>
+            </div>
+
+            <button class="complete-btn" id="completeBtn" onclick="checkCompletion()">Complete</button>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-content">
+            <div class="popup-message" id="popupMessage"></div>
+            <button class="popup-close" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        let timerInterval;
+        let dailyReset = false;
+
+        function updateTimer() {
+            const now = new Date();
+            const endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999);
+
+            const lastCompletionDate = localStorage.getItem('lastCompletionDate');
+            if (lastCompletionDate) {
+                const lastDate = new Date(lastCompletionDate);
+                if (lastDate.toDateString() !== now.toDateString()) {
+                    localStorage.removeItem('lastCompletionDate');
+                    dailyReset = true;
+                    resetSystem();
+                }
+            }
+
+            const diff = endOfDay - now;
+
+            if (diff <= 0) {
+                clearInterval(timerInterval);
+                startTimer();
+                return;
+            }
+
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('timeLeft').textContent =
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+            updateTimer();
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            document.getElementById('timeLeft').textContent = '00:00:00';
+        }
+
+        function validateInputs() {
+            const tasks = {
+                pushups: {value: parseInt(document.getElementById('pushups').value), max: 100},
+                situps: {value: parseInt(document.getElementById('situps').value), max: 100},
+                squats: {value: parseInt(document.getElementById('squats').value), max: 100},
+                run: {value: parseInt(document.getElementById('run').value), max: 10}
+            };
+
+            let incompleteTasks = [];
+            let allComplete = true;
+
+            for (const [task, data] of Object.entries(tasks)) {
+                if (data.value < data.max) {
+                    allComplete = false;
+                    incompleteTasks.push(task.replace(/([A-Z])/g, ' $1').toLowerCase());
+                }
+            }
+
+            return {allComplete, incompleteTasks};
+        }
+
+        function lockInputs() {
+            const inputs = document.querySelectorAll('.goal input');
+            inputs.forEach(input => {
+                input.disabled = true;
+                input.style.cursor = 'not-allowed';
+            });
+            document.getElementById('completeBtn').disabled = true;
+        }
+
+        function unlockInputs() {
+            const inputs = document.querySelectorAll('.goal input');
+            inputs.forEach(input => {
+                input.disabled = false;
+                input.style.cursor = 'auto';
+                input.value = 0;
+            });
+            document.getElementById('completeBtn').disabled = false;
+            localStorage.removeItem('pushups');
+            localStorage.removeItem('situps');
+            localStorage.removeItem('squats');
+            localStorage.removeItem('run');
+        }
+
+        function updateUI() {
+            const timeBox = document.getElementById('timeBox');
+            timeBox.classList.add('completed');
+            lockInputs();
+        }
+
+        function resetSystem() {
+            const timeBox = document.getElementById('timeBox');
+            timeBox.classList.remove('completed');
+            unlockInputs();
+            startTimer();
+        }
+
+        function checkCompletion() {
+            const {allComplete, incompleteTasks} = validateInputs();
+            const popupMessage = document.getElementById('popupMessage');
+            const popupOverlay = document.getElementById('popupOverlay');
+
+            if (allComplete) {
+                localStorage.setItem('lastCompletionDate', new Date());
+                stopTimer();
+                dailyReset = true;
+                updateUI();
+                popupMessage.innerHTML = '🎉 Congratulations!<br>You\'ve completed all daily tasks!';
+                popupMessage.style.color = 'cyan';
+            } else {
+                popupMessage.innerHTML = `⚠️ Warning!<br>Incomplete tasks:<br>${incompleteTasks.join('<br>').toUpperCase()}`;
+                popupMessage.style.color = '#ff4444';
+            }
+
+            popupOverlay.style.display = 'flex';
+        }
+
+        function closePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const lastCompletion = localStorage.getItem('lastCompletionDate');
+            const today = new Date().toDateString();
+
+            if (lastCompletion && new Date(lastCompletion).toDateString() === today) {
+                stopTimer();
+                dailyReset = true;
+                updateUI();
+            } else {
+                startTimer();
+                resetSystem();
+            }
+
+            const inputs = document.querySelectorAll(".goal input");
+            inputs.forEach(input => {
+                const storedValue = localStorage.getItem(input.id);
+                if (storedValue) {
+                    input.value = storedValue;
+                }
+                input.addEventListener("input", function () {
+                    if (!input.disabled) {
+                        localStorage.setItem(input.id, input.value);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
