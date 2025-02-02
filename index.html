@@ -1,15 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solo Leveling Quest</title>
+    <title>Solo Leveling Interface</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@400;700&display=swap');
+
+        :root {
+            --neon-blue: #00d9ff;
+            --neon-purple: #bd00ff;
+            --dark-bg: #0a1428;
+            --warning-red: #ff4444;
+            --cyber-gradient: linear-gradient(45deg, #00172e, #003b5c);
+        }
 
         body {
-            background: #0a1428;
+            background: var(--cyber-gradient);
             color: white;
             font-family: 'Montserrat', sans-serif;
             display: flex;
@@ -21,415 +30,427 @@
             box-sizing: border-box;
         }
 
-        .quest-container {
+        .cyber-container {
             width: 100%;
-            max-width: 350px;
+            max-width: 500px;
+            background: rgba(10, 20, 40, 0.95);
+            border: 2px solid var(--neon-blue);
+            border-radius: 15px;
+            box-shadow: 0 0 50px rgba(0, 217, 255, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .tab-container {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 2px solid var(--neon-blue);
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            color: var(--neon-blue);
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s;
+            position: relative;
+            min-width: 80px;
+        }
+
+        .tab-button.active {
+            background: rgba(0, 217, 255, 0.1);
+            color: white;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .tab-content {
+            padding: 20px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         .quest-header {
-            background: rgba(10, 20, 40, 0.95);
-            padding: 15px;
-            border-radius: 10px 10px 0 0;
-            border: 2px solid cyan;
-            border-bottom: none;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
             text-align: center;
+            margin-bottom: 25px;
         }
 
-        .quest-title {
-            color: cyan;
-            text-shadow: 0 0 10px cyan;
-            font-size: 24px;
-            margin: 0;
+        .quest-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            color: var(--neon-blue);
+            text-shadow: 0 0 15px var(--neon-blue);
+            margin: 10px 0;
             letter-spacing: 2px;
         }
 
-        .quest-box {
-            background: rgba(10, 20, 40, 0.95);
-            padding: 20px;
-            border-radius: 0 0 10px 10px;
-            border: 2px solid cyan;
-            border-top: none;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        .warning {
+            color: var(--warning-red);
+            text-shadow: 0 0 10px var(--warning-red);
+            font-size: 0.8em;
+            margin-top: 10px;
         }
 
-        .quest-description {
-            text-align: center;
-            margin: 15px 0;
-            line-height: 1.4;
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
         }
 
-        .goal {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 15px 0;
-            padding: 8px;
+        .goal-item {
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
-        }
-
-        .goal input {
-            width: 60px;
-            background: black;
-            color: cyan;
-            border: 1px solid cyan;
-            padding: 5px;
-            border-radius: 5px;
-            margin: 0 10px;
-            transition: all 0.3s;
-        }
-
-        .goal input:disabled {
-            opacity: 0.5;
-            border-color: #00ff00;
-            cursor: not-allowed;
-        }
-
-        .time-left-box {
-            color: cyan;
-            border: 1px solid cyan;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 20px;
-            text-shadow: 0 0 8px cyan;
-            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 8px;
+            padding: 12px;
             text-align: center;
+            position: relative;
+        }
+
+        .goal-item input {
+            width: 80%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--neon-purple);
+            color: var(--neon-purple);
+            font-size: 0.9em;
+            text-align: center;
+            padding: 6px;
+            margin-top: 5px;
+            border-radius: 4px;
             transition: all 0.3s;
         }
 
-        .time-left-box.completed {
-            border-color: #00ff00;
-            color: #00ff00;
-            text-shadow: 0 0 8px #00ff00;
-            background: rgba(0, 255, 0, 0.1);
+        .time-container {
+            text-align: center;
+            margin: 25px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 1px solid var(--neon-blue);
         }
 
-        .time-display {
+        #timeLeft {
+            font-family: 'Orbitron', sans-serif;
             font-size: 1.5em;
-            font-family: monospace;
-            letter-spacing: 2px;
+            color: var(--neon-blue);
+            text-shadow: 0 0 15px var(--neon-blue);
             margin: 10px 0;
         }
 
-        .completed-message {
-            font-size: 1.2em;
-            font-weight: bold;
-            display: none;
-        }
-
-        .time-left-box.completed .time-display {
-            display: none;
-        }
-
-        .time-left-box.completed .completed-message {
-            display: block;
-            color: #00ff00;
-            animation: glow 1.5s ease-in-out infinite alternate;
-        }
-
-        .time-label {
+        .neon-btn {
+            background: none;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 10px 20px;
             font-size: 0.9em;
-            opacity: 0.8;
-        }
-
-        .complete-btn {
-            background: cyan;
-            color: black;
-            font-weight: bold;
-            padding: 12px;
-            width: 100%;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
-            margin-top: 15px;
             transition: all 0.3s;
-        }
-
-        .complete-btn:disabled {
-            background: #666;
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
-        .complete-btn:hover:not(:disabled) {
-            background: white;
-            box-shadow: 0 0 15px cyan;
-        }
-
-        .popup-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+            border-radius: 6px;
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .popup-content {
-            background: rgba(10, 20, 40, 0.95);
-            padding: 25px;
-            border-radius: 10px;
-            border: 2px solid cyan;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-            text-align: center;
-            max-width: 300px;
-            width: 90%;
-        }
-
-        .popup-message {
-            color: cyan;
-            font-size: 1.1em;
-            margin: 15px 0;
-        }
-
-        .popup-close {
-            background: cyan;
-            color: black;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
             margin-top: 15px;
         }
 
-        .popup-close:hover {
-            background: white;
+        .progress-container {
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 1px solid var(--neon-blue);
         }
 
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
-            }
+        .progress-bar {
+            height: 18px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            margin: 12px 0;
+        }
 
-            to {
-                text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+            width: 0;
+            border-radius: 8px;
+            transition: width 0.5s;
+        }
+
+        .shadow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+            min-height: 150px;
+        }
+
+        .shadow-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--neon-purple);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            transition: transform 0.3s;
+            animation: shadowAppear 0.5s ease-out;
+        }
+
+        @keyframes shadowAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
             }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .shadow-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 8px;
+            border: 2px solid var(--neon-blue);
+            object-fit: cover;
         }
 
         @media (max-width: 480px) {
-            .goal input {
-                width: 50px;
+            .tab-button {
+                font-size: 0.8em;
+                padding: 8px;
             }
 
-            .quest-title {
-                font-size: 20px;
+            .quest-header h1 {
+                font-size: 1.5em;
+            }
+
+            .goals-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .shadow-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="quest-container">
-        <div class="quest-header">
-            <h1 class="quest-title">QUESTINFO</h1>
+    <div class="cyber-container">
+        <div class="tab-container">
+            <div class="tab-button active" onclick="switchTab('quest')"><i class="fas fa-skull"></i> QUEST</div>
+            <div class="tab-button" onclick="switchTab('progress')"><i class="fas fa-chart-line"></i> PROGRESS</div>
+            <div class="tab-button" onclick="switchTab('shadows')"><i class="fas fa-ghost"></i> SHADOWS</div>
         </div>
 
-        <div class="quest-box">
-            <p class="quest-description">
-                DAILY QUEST - TRAIN TO BECOME A<br>
-                <strong>CALITIONI</strong> - IF THE DAILY QUEST REMAINS
-            </p>
-
-            <div class="goal">
-                <span>Push-ups</span>
-                <input type="number" id="pushups" min="0" max="100" value="0">
-                <span>/100</span>
+        <!-- Quest Tab -->
+        <div class="tab-content active" id="questTab">
+            <div class="quest-header">
+                <h1>QUEST INFO</h1>
+                <div class="warning">WARNING! INCOMPLETE QUESTS WILL REDUCE STATS</div>
             </div>
 
-            <div class="goal">
-                <span>Sit-ups</span>
-                <input type="number" id="situps" min="0" max="100" value="0">
-                <span>/100</span>
+            <div class="goals-grid">
+                <div class="goal-item">
+                    <div>PUSH-UPS</div>
+                    <input type="number" id="pushups" min="0" max="100" value="0">
+                    <div>/ 100</div>
+                </div>
+                <div class="goal-item">
+                    <div>SIT-UPS</div>
+                    <input type="number" id="situps" min="0" max="100" value="0">
+                    <div>/ 100</div>
+                </div>
+                <div class="goal-item">
+                    <div>SQUATS</div>
+                    <input type="number" id="squats" min="0" max="100" value="0">
+                    <div>/ 100</div>
+                </div>
+                <div class="goal-item">
+                    <div>RUNNING</div>
+                    <input type="number" id="run" min="0" max="10" value="0">
+                    <div>/ 10KM</div>
+                </div>
             </div>
 
-            <div class="goal">
-                <span>Squats</span>
-                <input type="number" id="squats" min="0" max="100" value="0">
-                <span>/100</span>
+            <div class="time-container">
+                <div>TIME REMAINING</div>
+                <div id="timeLeft">00:00:00</div>
+                <button class="neon-btn" id="verifyBtn" onclick="validateQuest()">VERIFY QUEST</button>
             </div>
-
-            <div class="goal">
-                <span>Run</span>
-                <input type="number" id="run" min="0" max="10" value="0">
-                <span>/10KM</span>
-            </div>
-
-            <div class="time-left-box" id="timeBox">
-                <div class="time-label">TIME LEFT TO COMPLETE</div>
-                <div class="time-display" id="timeLeft">00:00:00</div>
-                <div class="completed-message">DAILY QUEST COMPLETED!</div>
-                <div class="time-label">HOURS : MINUTES : SECONDS</div>
-            </div>
-
-            <button class="complete-btn" id="completeBtn" onclick="checkCompletion()">Complete</button>
         </div>
-    </div>
 
-    <div class="popup-overlay" id="popupOverlay">
-        <div class="popup-content">
-            <div class="popup-message" id="popupMessage"></div>
-            <button class="popup-close" onclick="closePopup()">Close</button>
+        <!-- Progress Tab -->
+        <div class="tab-content" id="progressTab">
+            <div class="quest-header">
+                <h1>PLAYER STATS</h1>
+                <div class="warning" id="hunterRank">CURRENT HUNTER RANK: E</div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" id="levelProgress"></div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div>STRENGTH</div>
+                        <div class="stat-value" id="str">15</div>
+                    </div>
+                    <div class="stat-item">
+                        <div>AGILITY</div>
+                        <div class="stat-value" id="agi">12</div>
+                    </div>
+                    <div class="stat-item">
+                        <div>STAMINA</div>
+                        <div class="stat-value" id="sta">18</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shadows Tab -->
+        <div class="tab-content" id="shadowsTab">
+            <div class="quest-header">
+                <h1>SHADOW ARMY</h1>
+                <div class="warning" id="shadowCount">SUMMONED CREATURES: 0/10</div>
+            </div>
+            <div class="shadow-grid" id="shadowArmy"></div>
         </div>
     </div>
 
     <script>
-        let timerInterval;
-        let dailyReset = false;
+        // Sistema de Tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+        }
 
+        // Sistema de Progressão
+        let currentLevel = 1;
+        let totalXP = 0;
+        const xpPerLevel = [0, 200, 450, 750, 1100, 1500, 2000, 2600, 3300, 4100, 5000];
+        const shadows = [
+            { 
+                name: "Igris", 
+                image: "https://i.pinimg.com/736x/62/ea/b0/62eab05bb9a9c1fc0aeb311d70743df9.jpg",
+                unlockLevel: 10,
+                stats: "LV.78 | Marshal Grade"
+            }
+        ];
+
+        function updateProgress(xp) {
+            totalXP += xp;
+            const oldLevel = currentLevel;
+            
+            while(totalXP >= xpPerLevel[currentLevel] && currentLevel < xpPerLevel.length-1) {
+                currentLevel++;
+            }
+
+            if(oldLevel !== currentLevel) {
+                alert(`LEVEL UP! Now Level ${currentLevel}`);
+                updateHunterRank();
+                checkForNewShadows();
+            }
+            
+            const progress = ((totalXP - xpPerLevel[currentLevel-1]) / 
+                            (xpPerLevel[currentLevel] - xpPerLevel[currentLevel-1])) * 100;
+            document.getElementById('levelProgress').style.width = `${progress}%`;
+        }
+
+        function updateHunterRank() {
+            const ranks = ['E', 'D', 'C', 'B', 'A', 'S', 'SS', 'SSS', 'Monarch', 'Ruler'];
+            const rankIndex = Math.floor(currentLevel/10);
+            document.getElementById('hunterRank').textContent = 
+                `CURRENT HUNTER RANK: ${ranks[rankIndex] || 'Ruler'}`;
+        }
+
+        // Sistema de Sombras
+        function checkForNewShadows() {
+            shadows.forEach(shadow => {
+                if(currentLevel >= shadow.unlockLevel && 
+                   !document.getElementById(shadow.name)) {
+                    addShadowToArmy(shadow);
+                }
+            });
+        }
+
+        function addShadowToArmy(shadow) {
+            const shadowDiv = document.createElement('div');
+            shadowDiv.className = 'shadow-card';
+            shadowDiv.id = shadow.name;
+            shadowDiv.innerHTML = `
+                <img src="${shadow.image}" class="shadow-avatar">
+                <div>${shadow.name}</div>
+                <div class="stat-value">${shadow.stats}</div>
+            `;
+            
+            document.getElementById('shadowArmy').appendChild(shadowDiv);
+            updateShadowCount();
+        }
+
+        function updateShadowCount() {
+            const count = document.querySelectorAll('.shadow-card').length;
+            document.getElementById('shadowCount').textContent = 
+                `SUMMONED CREATURES: ${count}/10`;
+        }
+
+        // Sistema de Timer
+        let timerInterval;
         function updateTimer() {
             const now = new Date();
-            const endOfDay = new Date();
-            endOfDay.setHours(23, 59, 59, 999);
+            const end = new Date();
+            end.setHours(23, 59, 59, 999);
 
-            const lastCompletionDate = localStorage.getItem('lastCompletionDate');
-            if (lastCompletionDate) {
-                const lastDate = new Date(lastCompletionDate);
-                if (lastDate.toDateString() !== now.toDateString()) {
-                    localStorage.removeItem('lastCompletionDate');
-                    dailyReset = true;
-                    resetSystem();
-                }
-            }
-
-            const diff = endOfDay - now;
-
-            if (diff <= 0) {
-                clearInterval(timerInterval);
-                startTimer();
-                return;
-            }
-
-            const hours = Math.floor(diff / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            const diff = end - now;
+            const hours = Math.floor(diff / 3600000);
+            const minutes = Math.floor((diff % 3600000) / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
 
             document.getElementById('timeLeft').textContent =
                 `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         }
 
-        function startTimer() {
-            clearInterval(timerInterval);
+        // Sistema de Verificação de Quest
+        function validateQuest() {
+            const inputs = ['pushups', 'situps', 'squats', 'run'].map(id =>
+                parseInt(document.getElementById(id).value)
+            );
+
+            if (inputs.every((val, i) => val >= [100, 100, 100, 10][i])) {
+                updateProgress(250);
+                alert('QUEST COMPLETE! +250 XP');
+                localStorage.setItem('lastComplete', new Date());
+                lockInputs();
+            } else {
+                alert('FAILED! STATS DECREASED');
+                ['str', 'agi', 'sta'].forEach(id => {
+                    const el = document.getElementById(id);
+                    el.textContent = Math.max(0, parseInt(el.textContent) - 1);
+                });
+            }
+        }
+
+        // Bloqueio de Inputs
+        function lockInputs() {
+            document.querySelectorAll('.goal-item input').forEach(input => {
+                input.disabled = true;
+                input.style.borderColor = 'var(--warning-red)';
+            });
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
             timerInterval = setInterval(updateTimer, 1000);
             updateTimer();
-        }
-
-        function stopTimer() {
-            clearInterval(timerInterval);
-            document.getElementById('timeLeft').textContent = '00:00:00';
-        }
-
-        function validateInputs() {
-            const tasks = {
-                pushups: {value: parseInt(document.getElementById('pushups').value), max: 100},
-                situps: {value: parseInt(document.getElementById('situps').value), max: 100},
-                squats: {value: parseInt(document.getElementById('squats').value), max: 100},
-                run: {value: parseInt(document.getElementById('run').value), max: 10}
-            };
-
-            let incompleteTasks = [];
-            let allComplete = true;
-
-            for (const [task, data] of Object.entries(tasks)) {
-                if (data.value < data.max) {
-                    allComplete = false;
-                    incompleteTasks.push(task.replace(/([A-Z])/g, ' $1').toLowerCase());
-                }
-            }
-
-            return {allComplete, incompleteTasks};
-        }
-
-        function lockInputs() {
-            const inputs = document.querySelectorAll('.goal input');
-            inputs.forEach(input => {
-                input.disabled = true;
-                input.style.cursor = 'not-allowed';
-            });
-            document.getElementById('completeBtn').disabled = true;
-        }
-
-        function unlockInputs() {
-            const inputs = document.querySelectorAll('.goal input');
-            inputs.forEach(input => {
-                input.disabled = false;
-                input.style.cursor = 'auto';
-                input.value = 0;
-            });
-            document.getElementById('completeBtn').disabled = false;
-            localStorage.removeItem('pushups');
-            localStorage.removeItem('situps');
-            localStorage.removeItem('squats');
-            localStorage.removeItem('run');
-        }
-
-        function updateUI() {
-            const timeBox = document.getElementById('timeBox');
-            timeBox.classList.add('completed');
-            lockInputs();
-        }
-
-        function resetSystem() {
-            const timeBox = document.getElementById('timeBox');
-            timeBox.classList.remove('completed');
-            unlockInputs();
-            startTimer();
-        }
-
-        function checkCompletion() {
-            const {allComplete, incompleteTasks} = validateInputs();
-            const popupMessage = document.getElementById('popupMessage');
-            const popupOverlay = document.getElementById('popupOverlay');
-
-            if (allComplete) {
-                localStorage.setItem('lastCompletionDate', new Date());
-                stopTimer();
-                dailyReset = true;
-                updateUI();
-                popupMessage.innerHTML = '🎉 Congratulations!<br>You\'ve completed all daily tasks!';
-                popupMessage.style.color = 'cyan';
-            } else {
-                popupMessage.innerHTML = `⚠️ Warning!<br>Incomplete tasks:<br>${incompleteTasks.join('<br>').toUpperCase()}`;
-                popupMessage.style.color = '#ff4444';
-            }
-
-            popupOverlay.style.display = 'flex';
-        }
-
-        function closePopup() {
-            document.getElementById('popupOverlay').style.display = 'none';
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const lastCompletion = localStorage.getItem('lastCompletionDate');
-            const today = new Date().toDateString();
-
-            if (lastCompletion && new Date(lastCompletion).toDateString() === today) {
-                stopTimer();
-                dailyReset = true;
-                updateUI();
-            } else {
-                startTimer();
-                resetSystem();
-            }
-
-            const inputs = document.querySelectorAll(".goal input");
-            inputs.forEach(input => {
-                const storedValue = localStorage.getItem(input.id);
-                if (storedValue) {
-                    input.value = storedValue;
-                }
-                input.addEventListener("input", function () {
-                    if (!input.disabled) {
-                        localStorage.setItem(input.id, input.value);
-                    }
-                });
-            });
+            if (localStorage.getItem('lastComplete')) lockInputs();
+            updateHunterRank();
         });
     </script>
 </body>
