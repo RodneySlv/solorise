@@ -219,6 +219,59 @@
             object-fit: cover;
         }
 
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .cyber-modal {
+            background: rgba(10, 20, 40, 0.97);
+            border: 2px solid var(--neon-blue);
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 300px;
+            text-align: center;
+            position: relative;
+            animation: modalAppear 0.3s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            margin-bottom: 15px;
+        }
+
+        .modal-content {
+            margin: 15px 0;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: var(--neon-blue);
+        }
+
         @media (max-width: 480px) {
             .tab-button {
                 font-size: 0.8em;
@@ -317,9 +370,19 @@
         <div class="tab-content" id="shadowsTab">
             <div class="quest-header">
                 <h1>SHADOW ARMY</h1>
-                <div class="warning" id="shadowCount">SUMMONED CREATURES: 0/10</div>
+                <div class="warning" id="shadowCount">SUMMONED CREATURES: 0/12</div>
             </div>
             <div class="shadow-grid" id="shadowArmy"></div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="cyber-modal">
+                <div class="modal-close" onclick="closeModal()">&times;</div>
+                <div class="modal-header" id="modalHeader">ALERTA</div>
+                <div class="modal-content" id="modalContent"></div>
+                <button class="neon-btn" onclick="closeModal()">OK</button>
+            </div>
         </div>
     </div>
 
@@ -335,47 +398,53 @@
         // Sistema de Progressão
         let currentLevel = 1;
         let totalXP = 0;
-        const xpPerLevel = [0, 200, 450, 750, 1100, 1500, 2000, 2600, 3300, 4100, 5000];
+        const xpPerLevel = new Array(121).fill(0).map((_, i) => i * 500);
         const shadows = [
-            { 
-                name: "Igris", 
-                image: "https://i.pinimg.com/736x/62/ea/b0/62eab05bb9a9c1fc0aeb311d70743df9.jpg",
-                unlockLevel: 10,
-                stats: "LV.78 | Marshal Grade"
-            }
+            { name: "Igris", image: "https://static.wikia.nocookie.net/solo-leveling/images/d/d7/Igris22.jpeg/revision/latest/scale-to-width-down/140?cb=20250130123238", unlockLevel: 10, stats: "LV.78 | Marshal Grade" },
+            { name: "Iron", image: "https://static.wikia.nocookie.net/solo-leveling/images/e/e3/Iron_3.jpeg/revision/latest/scale-to-width-down/140?cb=20250130114211", unlockLevel: 20, stats: "LV.65 | Iron Knight" },
+            { name: "Tank", image: "https://static.wikia.nocookie.net/solo-leveling/images/b/bd/Tank4.jpg/revision/latest/scale-to-width-down/140?cb=20250130135752", unlockLevel: 30, stats: "LV.72 | Heavy Defender" },
+            { name: "Tusk", image: "https://static.wikia.nocookie.net/solo-leveling/images/d/d3/Tusk3.jpeg/revision/latest/scale-to-width-down/140?cb=20250123094345", unlockLevel: 40, stats: "LV.85 | Beast Lord" },
+            { name: "Jima", image: "https://static.wikia.nocookie.net/solo-leveling/images/6/6a/Jima1.jpg/revision/latest/scale-to-width-down/140?cb=20240404124459", unlockLevel: 50, stats: "LV.88 | Shadow Assassin" },
+            { name: "Kaisel", image: "https://static.wikia.nocookie.net/solo-leveling/images/9/90/Kaisel1.jpg/revision/latest/scale-to-width-down/140?cb=20210922223323", unlockLevel: 60, stats: "LV.92 | Sky Sovereign" },
+            { name: "Min", image: "https://static.wikia.nocookie.net/solo-leveling/images/d/d8/%EB%B3%91%EA%B7%9C4.jpg/revision/latest/scale-to-width-down/140?cb=20211107161412", unlockLevel: 70, stats: "LV.95 | Undead General" },
+            { name: "Beru", image: "https://static.wikia.nocookie.net/solo-leveling/images/a/a3/Beru32.jpg/revision/latest/scale-to-width-down/140?cb=20250121171638", unlockLevel: 80, stats: "LV.99 | Insect Monarch" },
+            { name: "Shadow Giants", image: "https://static.wikia.nocookie.net/solo-leveling/images/5/5c/ShadowGiants5.jpeg/revision/latest/scale-to-width-down/140?cb=20250123094027", unlockLevel: 90, stats: "LV.102 | Colossal Army" },
+            { name: "Kamish", image: "https://static.wikia.nocookie.net/solo-leveling/images/d/d1/Kamish3.jpg/revision/latest/scale-to-width-down/140?cb=20210706155759", unlockLevel: 100, stats: "LV.110 | Dragon Monarch" },
+            { name: "Greed", image: "https://static.wikia.nocookie.net/solo-leveling/images/2/2f/Greed2.jpg/revision/latest/scale-to-width-down/140?cb=20210420162307", unlockLevel: 110, stats: "LV.115 | Sin Incarnate" },
+            { name: "Bellion", image: "https://static.wikia.nocookie.net/solo-leveling/images/d/de/Bellion1.jpg/revision/latest/scale-to-width-down/140?cb=20210908183510", unlockLevel: 120, stats: "LV.120 | Monarch's Right Hand" }
         ];
 
         function updateProgress(xp) {
             totalXP += xp;
             const oldLevel = currentLevel;
-            
-            while(totalXP >= xpPerLevel[currentLevel] && currentLevel < xpPerLevel.length-1) {
+
+            while (totalXP >= xpPerLevel[currentLevel] && currentLevel < xpPerLevel.length - 1) {
                 currentLevel++;
             }
 
-            if(oldLevel !== currentLevel) {
-                alert(`LEVEL UP! Now Level ${currentLevel}`);
+            if (oldLevel !== currentLevel) {
+                showModal('LEVEL UP!', `🔥 NOW LEVEL ${currentLevel} 🔥`);
                 updateHunterRank();
                 checkForNewShadows();
             }
-            
-            const progress = ((totalXP - xpPerLevel[currentLevel-1]) / 
-                            (xpPerLevel[currentLevel] - xpPerLevel[currentLevel-1])) * 100;
+
+            const progress = ((totalXP - xpPerLevel[currentLevel - 1]) /
+                (xpPerLevel[currentLevel] - xpPerLevel[currentLevel - 1])) * 100;
             document.getElementById('levelProgress').style.width = `${progress}%`;
         }
 
         function updateHunterRank() {
             const ranks = ['E', 'D', 'C', 'B', 'A', 'S', 'SS', 'SSS', 'Monarch', 'Ruler'];
-            const rankIndex = Math.floor(currentLevel/10);
-            document.getElementById('hunterRank').textContent = 
+            const rankIndex = Math.floor(currentLevel / 10);
+            document.getElementById('hunterRank').textContent =
                 `CURRENT HUNTER RANK: ${ranks[rankIndex] || 'Ruler'}`;
         }
 
         // Sistema de Sombras
         function checkForNewShadows() {
             shadows.forEach(shadow => {
-                if(currentLevel >= shadow.unlockLevel && 
-                   !document.getElementById(shadow.name)) {
+                if (currentLevel >= shadow.unlockLevel &&
+                    !document.getElementById(shadow.name)) {
                     addShadowToArmy(shadow);
                 }
             });
@@ -390,15 +459,15 @@
                 <div>${shadow.name}</div>
                 <div class="stat-value">${shadow.stats}</div>
             `;
-            
+
             document.getElementById('shadowArmy').appendChild(shadowDiv);
             updateShadowCount();
         }
 
         function updateShadowCount() {
             const count = document.querySelectorAll('.shadow-card').length;
-            document.getElementById('shadowCount').textContent = 
-                `SUMMONED CREATURES: ${count}/10`;
+            document.getElementById('shadowCount').textContent =
+                `SUMMONED CREATURES: ${count}/12`;
         }
 
         // Sistema de Timer
@@ -425,16 +494,28 @@
 
             if (inputs.every((val, i) => val >= [100, 100, 100, 10][i])) {
                 updateProgress(250);
-                alert('QUEST COMPLETE! +250 XP');
+                showModal('QUEST COMPLETE!', '🎉 +250 XP GAINED ⚡');
                 localStorage.setItem('lastComplete', new Date());
                 lockInputs();
             } else {
-                alert('FAILED! STATS DECREASED');
+                showModal('QUEST FAILED!', '⚠️ STATS DECREASED!');
                 ['str', 'agi', 'sta'].forEach(id => {
                     const el = document.getElementById(id);
                     el.textContent = Math.max(0, parseInt(el.textContent) - 1);
                 });
             }
+        }
+
+        // Sistema de Modal
+        function showModal(header, content) {
+            const overlay = document.getElementById('modalOverlay');
+            document.getElementById('modalHeader').textContent = header;
+            document.getElementById('modalContent').innerHTML = content;
+            overlay.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
         }
 
         // Bloqueio de Inputs
