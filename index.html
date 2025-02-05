@@ -156,6 +156,12 @@
             margin-top: 15px;
         }
 
+        .neon-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: var(--warning-red);
+        }
+
         .progress-container {
             margin-top: 25px;
             padding: 15px;
@@ -179,6 +185,28 @@
             width: 0;
             border-radius: 8px;
             transition: width 0.5s;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--neon-blue);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2em;
+            color: var(--neon-blue);
+            margin: 10px 0;
         }
 
         .shadow-grid {
@@ -351,16 +379,12 @@
                 </div>
                 <div class="stats-grid">
                     <div class="stat-item">
-                        <div>STRENGTH</div>
-                        <div class="stat-value" id="str">15</div>
+                        <div>CURRENT LEVEL</div>
+                        <div class="stat-value" id="currentLevel">1</div>
                     </div>
                     <div class="stat-item">
-                        <div>AGILITY</div>
-                        <div class="stat-value" id="agi">12</div>
-                    </div>
-                    <div class="stat-item">
-                        <div>STAMINA</div>
-                        <div class="stat-value" id="sta">18</div>
+                        <div>NEXT SHADOW</div>
+                        <div class="stat-value" id="nextShadow">Igris (LV.10)</div>
                     </div>
                 </div>
             </div>
@@ -398,38 +422,34 @@
         // Sistema de Progressão
         let currentLevel = 1;
         let totalXP = 0;
-        const xpPerLevel = new Array(121).fill(0).map((_, i) => i * 500);
+        const xpPerLevel = new Array(121).fill(0).map((_, i) => i * 100);
         const shadows = [
-            { name: "Igris", image: "https://static.wikia.nocookie.net/solo-leveling/images/d/d7/Igris22.jpeg/revision/latest/scale-to-width-down/140?cb=20250130123238", unlockLevel: 10, stats: "LV.78 | Marshal Grade" },
-            { name: "Iron", image: "https://static.wikia.nocookie.net/solo-leveling/images/e/e3/Iron_3.jpeg/revision/latest/scale-to-width-down/140?cb=20250130114211", unlockLevel: 20, stats: "LV.65 | Iron Knight" },
-            { name: "Tank", image: "https://static.wikia.nocookie.net/solo-leveling/images/b/bd/Tank4.jpg/revision/latest/scale-to-width-down/140?cb=20250130135752", unlockLevel: 30, stats: "LV.72 | Heavy Defender" },
-            { name: "Tusk", image: "https://static.wikia.nocookie.net/solo-leveling/images/d/d3/Tusk3.jpeg/revision/latest/scale-to-width-down/140?cb=20250123094345", unlockLevel: 40, stats: "LV.85 | Beast Lord" },
-            { name: "Jima", image: "https://static.wikia.nocookie.net/solo-leveling/images/6/6a/Jima1.jpg/revision/latest/scale-to-width-down/140?cb=20240404124459", unlockLevel: 50, stats: "LV.88 | Shadow Assassin" },
-            { name: "Kaisel", image: "https://static.wikia.nocookie.net/solo-leveling/images/9/90/Kaisel1.jpg/revision/latest/scale-to-width-down/140?cb=20210922223323", unlockLevel: 60, stats: "LV.92 | Sky Sovereign" },
-            { name: "Min", image: "https://static.wikia.nocookie.net/solo-leveling/images/d/d8/%EB%B3%91%EA%B7%9C4.jpg/revision/latest/scale-to-width-down/140?cb=20211107161412", unlockLevel: 70, stats: "LV.95 | Undead General" },
-            { name: "Beru", image: "https://static.wikia.nocookie.net/solo-leveling/images/a/a3/Beru32.jpg/revision/latest/scale-to-width-down/140?cb=20250121171638", unlockLevel: 80, stats: "LV.99 | Insect Monarch" },
-            { name: "Shadow Giants", image: "https://static.wikia.nocookie.net/solo-leveling/images/5/5c/ShadowGiants5.jpeg/revision/latest/scale-to-width-down/140?cb=20250123094027", unlockLevel: 90, stats: "LV.102 | Colossal Army" },
-            { name: "Kamish", image: "https://static.wikia.nocookie.net/solo-leveling/images/d/d1/Kamish3.jpg/revision/latest/scale-to-width-down/140?cb=20210706155759", unlockLevel: 100, stats: "LV.110 | Dragon Monarch" },
-            { name: "Greed", image: "https://static.wikia.nocookie.net/solo-leveling/images/2/2f/Greed2.jpg/revision/latest/scale-to-width-down/140?cb=20210420162307", unlockLevel: 110, stats: "LV.115 | Sin Incarnate" },
-            { name: "Bellion", image: "https://static.wikia.nocookie.net/solo-leveling/images/d/de/Bellion1.jpg/revision/latest/scale-to-width-down/140?cb=20210908183510", unlockLevel: 120, stats: "LV.120 | Monarch's Right Hand" }
+            { name: "Igris", image: "https://i.imgur.com/4Q9XZ3N.png", unlockLevel: 10, stats: "LV.78 | Marshal Grade" },
+            { name: "Iron", image: "https://i.imgur.com/7JvYt3b.png", unlockLevel: 20, stats: "LV.65 | Iron Knight" },
+            { name: "Tank", image: "https://i.imgur.com/Vp6tW9Q.png", unlockLevel: 30, stats: "LV.72 | Heavy Defender" },
+            { name: "Tusk", image: "https://i.imgur.com/9tK5l7M.png", unlockLevel: 40, stats: "LV.85 | Beast Lord" },
+            { name: "Jima", image: "https://i.imgur.com/3q7sL9f.png", unlockLevel: 50, stats: "LV.88 | Shadow Assassin" },
+            { name: "Kaisel", image: "https://i.imgur.com/m4Wlz0k.png", unlockLevel: 60, stats: "LV.92 | Sky Sovereign" },
+            { name: "Min", image: "https://i.imgur.com/5T2wQ9H.png", unlockLevel: 70, stats: "LV.95 | Undead General" },
+            { name: "Beru", image: "https://i.imgur.com/6J9mZQH.png", unlockLevel: 80, stats: "LV.99 | Insect Monarch" },
+            { name: "Shadow Giants", image: "https://i.imgur.com/Lk3Q4rW.png", unlockLevel: 90, stats: "LV.102 | Colossal Army" },
+            { name: "Kamish", image: "https://i.imgur.com/1qZ8l9F.png", unlockLevel: 100, stats: "LV.110 | Dragon Monarch" },
+            { name: "Greed", image: "https://i.imgur.com/2fG9r7J.png", unlockLevel: 110, stats: "LV.115 | Sin Incarnate" },
+            { name: "Bellion", image: "https://i.imgur.com/deBellion.png", unlockLevel: 120, stats: "LV.120 | Monarch's Right Hand" }
         ];
 
-        function updateProgress(xp) {
-            totalXP += xp;
+        function updateProgress() {
             const oldLevel = currentLevel;
-
-            while (totalXP >= xpPerLevel[currentLevel] && currentLevel < xpPerLevel.length - 1) {
-                currentLevel++;
-            }
+            currentLevel = Math.floor(totalXP / 100) + 1;
+            document.getElementById('currentLevel').textContent = currentLevel;
 
             if (oldLevel !== currentLevel) {
-                showModal('LEVEL UP!', `🔥 NOW LEVEL ${currentLevel} 🔥`);
                 updateHunterRank();
                 checkForNewShadows();
+                updateNextShadow();
             }
 
-            const progress = ((totalXP - xpPerLevel[currentLevel - 1]) /
-                (xpPerLevel[currentLevel] - xpPerLevel[currentLevel - 1])) * 100;
+            const progress = (totalXP % 100);
             document.getElementById('levelProgress').style.width = `${progress}%`;
         }
 
@@ -448,6 +468,12 @@
                     addShadowToArmy(shadow);
                 }
             });
+        }
+
+        function updateNextShadow() {
+            const nextShadow = shadows.find(shadow => currentLevel < shadow.unlockLevel);
+            document.getElementById('nextShadow').textContent = 
+                nextShadow ? `${nextShadow.name} (LV.${nextShadow.unlockLevel})` : "MAX LEVEL REACHED";
         }
 
         function addShadowToArmy(shadow) {
@@ -493,8 +519,9 @@
             );
 
             if (inputs.every((val, i) => val >= [100, 100, 100, 10][i])) {
-                updateProgress(250);
-                showModal('QUEST COMPLETE!', '🎉 +250 XP GAINED ⚡');
+                totalXP += 400; // 4 levels por dia
+                updateProgress();
+                showModal('QUEST COMPLETE!', '🎉 +4 Levels Gained! ⚡<br>Return tomorrow for new quest!');
                 localStorage.setItem('lastComplete', new Date());
                 lockInputs();
             } else {
@@ -520,18 +547,40 @@
 
         // Bloqueio de Inputs
         function lockInputs() {
+            const btn = document.getElementById('verifyBtn');
+            btn.disabled = true;
+            btn.textContent = 'QUEST COMPLETED';
             document.querySelectorAll('.goal-item input').forEach(input => {
                 input.disabled = true;
                 input.style.borderColor = 'var(--warning-red)';
             });
         }
 
+        function checkDailyReset() {
+            const lastComplete = localStorage.getItem('lastComplete');
+            if (lastComplete) {
+                const lastDate = new Date(lastComplete);
+                const now = new Date();
+                if (now.toDateString() !== lastDate.toDateString()) {
+                    document.getElementById('verifyBtn').disabled = false;
+                    document.getElementById('verifyBtn').textContent = 'VERIFY QUEST';
+                    document.querySelectorAll('.goal-item input').forEach(input => {
+                        input.disabled = false;
+                        input.value = 0;
+                        input.style.borderColor = 'var(--neon-purple)';
+                    });
+                }
+            }
+        }
+
         // Inicialização
         document.addEventListener('DOMContentLoaded', () => {
             timerInterval = setInterval(updateTimer, 1000);
             updateTimer();
-            if (localStorage.getItem('lastComplete')) lockInputs();
-            updateHunterRank();
+            checkDailyReset();
+            setInterval(checkDailyReset, 60000);
+            updateProgress();
+            updateNextShadow();
         });
     </script>
 </body>
