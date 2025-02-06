@@ -15,18 +15,18 @@ let currentLevel = 1;
 let totalXP = 0;
 const xpPerLevel = new Array(121).fill(0).map((_, i) => i * 100);
 const shadows = [
-    { name: "Igris", image: "https://images5.alphacoders.com/135/1357474.png", unlockLevel: 10, stats: "LV.78 | Marshal Grade" },
-    { name: "Iron", image: "https://i.imgur.com/7JvYt3b.png", unlockLevel: 20, stats: "LV.65 | Iron Knight" },
-    { name: "Tank", image: "https://i.imgur.com/Vp6tW9Q.png", unlockLevel: 30, stats: "LV.72 | Heavy Defender" },
-    { name: "Tusk", image: "https://i.imgur.com/9tK5l7M.png", unlockLevel: 40, stats: "LV.85 | Beast Lord" },
-    { name: "Jima", image: "https://i.imgur.com/3q7sL9f.png", unlockLevel: 50, stats: "LV.88 | Shadow Assassin" },
-    { name: "Kaisel", image: "https://i.imgur.com/m4Wlz0k.png", unlockLevel: 60, stats: "LV.92 | Sky Sovereign" },
-    { name: "Min", image: "https://i.imgur.com/5T2wQ9H.png", unlockLevel: 70, stats: "LV.95 | Undead General" },
-    { name: "Beru", image: "https://i.imgur.com/6J9mZQH.png", unlockLevel: 80, stats: "LV.99 | Insect Monarch" },
-    { name: "Shadow Giants", image: "https://i.imgur.com/Lk3Q4rW.png", unlockLevel: 90, stats: "LV.102 | Colossal Army" },
-    { name: "Kamish", image: "https://i.imgur.com/1qZ8l9F.png", unlockLevel: 100, stats: "LV.110 | Dragon Monarch" },
-    { name: "Greed", image: "https://i.imgur.com/2fG9r7J.png", unlockLevel: 110, stats: "LV.115 | Sin Incarnate" },
-    { name: "Bellion", image: "https://i.imgur.com/deBellion.png", unlockLevel: 120, stats: "LV.120 | Monarch's Right Hand" }
+    { name: "Igris", image: "https://www.nautiljon.com/images/manga_persos/00/73/mini/igris_7437.webp?11584024861", unlockLevel: 10, stats: "LV.78 | Marshal Grade" },
+    { name: "Iron", image: "https://www.nautiljon.com/images/manga_persos/00/24/mini/acier_7442.webp?11584135234", unlockLevel: 20, stats: "LV.65 | Iron Knight" },
+    { name: "Tank", image: "https://www.nautiljon.com/images/manga_persos/00/14/mini/tank_7441.webp?11584135243", unlockLevel: 30, stats: "LV.72 | Heavy Defender" },
+    { name: "Tusk", image: "https://www.nautiljon.com/images/manga_persos/00/66/mini/kargalgan_7466.webp?10", unlockLevel: 40, stats: "LV.85 | Beast Lord" },
+    { name: "Jima", image: "https://static1.cbrimages.com/wordpress/wp-content/uploads/2024/02/img_0962.jpeg", unlockLevel: 50, stats: "LV.88 | Shadow Assassin" },
+    { name: "Kaisel", image: "https://i.redd.it/v8jcf5rpbru31.png", unlockLevel: 60, stats: "LV.92 | Sky Sovereign" },
+    { name: "Min", image: "https://static1.cbrimages.com/wordpress/wp-content/uploads/2021/12/solo-leveling-min-byung-gyu.jpg", unlockLevel: 70, stats: "LV.95 | Undead General" },
+    { name: "Beru", image: "https://www.nautiljon.com/images/manga_persos/00/04/mini/beru_7440.webp?11584013954", unlockLevel: 80, stats: "LV.99 | Insect Monarch" },
+    { name: "Shadow Giants", image: "https://preview.redd.it/7rvc8lyvoxia1.jpg?auto=webp&s=15faa8d4944b7fe00343c0d528cd0caac2e06cf4", unlockLevel: 90, stats: "LV.102 | Colossal Army" },
+    { name: "Kamish", image: "https://pbs.twimg.com/media/EgnJzHqWAAEso60.jpg:large", unlockLevel: 100, stats: "LV.110 | Dragon Monarch" },
+    { name: "Greed", image: "https://static.wikia.nocookie.net/solo-leveling/images/2/27/Greed3.jpg", unlockLevel: 110, stats: "LV.115 | Sin Incarnate" },
+    { name: "Bellion", image: "https://i.ytimg.com/vi/y8eJcRgr5nE/maxresdefault.jpg", unlockLevel: 120, stats: "LV.120 | Monarch's Right Hand" }
 ];
 
 function updateProgress() {
