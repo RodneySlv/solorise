@@ -13,6 +13,7 @@ body {
     color: white;
     font-family: 'Montserrat', sans-serif;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
@@ -359,6 +360,15 @@ body {
     right: 10px;
     cursor: pointer;
     color: var(--neon-blue);
+}
+
+.footer {
+    margin-top: 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9em;
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px var(--neon-blue);
+    text-align: center;
 }
 
 @media (max-width: 480px) {
