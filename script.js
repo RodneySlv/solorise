@@ -161,6 +161,8 @@ function checkDailyReset() {
                 input.value = 0;
                 input.style.borderColor = 'var(--neon-purple)';
             });
+        } else {
+            lockInputs();
         }
     }
 }
