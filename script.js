@@ -15,7 +15,7 @@ let currentLevel = 1;
 let totalXP = 0;
 const xpPerLevel = new Array(121).fill(0).map((_, i) => i * 100);
 const shadows = [
-    { name: "Igris", image: "https://i.imgur.com/4Q9XZ3N.png", unlockLevel: 10, stats: "LV.78 | Marshal Grade" },
+    { name: "Igris", image: "https://images5.alphacoders.com/135/1357474.png", unlockLevel: 10, stats: "LV.78 | Marshal Grade" },
     { name: "Iron", image: "https://i.imgur.com/7JvYt3b.png", unlockLevel: 20, stats: "LV.65 | Iron Knight" },
     { name: "Tank", image: "https://i.imgur.com/Vp6tW9Q.png", unlockLevel: 30, stats: "LV.72 | Heavy Defender" },
     { name: "Tusk", image: "https://i.imgur.com/9tK5l7M.png", unlockLevel: 40, stats: "LV.85 | Beast Lord" },
