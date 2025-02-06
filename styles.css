@@ -30,11 +30,6 @@ body {
     box-shadow: 0 0 50px rgba(0, 217, 255, 0.3);
     overflow: hidden;
     position: relative;
-    transition: box-shadow 0.5s ease;
-}
-
-.cyber-container.active {
-    box-shadow: 0 0 50px rgba(189, 0, 255, 0.7), 0 0 100px rgba(0, 0, 0, 0.7);
 }
 
 .tab-container {
