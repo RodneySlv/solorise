@@ -28,6 +28,7 @@ const shadows = [
     { name: "Greed", image: "https://static.wikia.nocookie.net/solo-leveling/images/2/27/Greed3.jpg", unlockLevel: 110, stats: "LV.115 | Sin Incarnate" },
     { name: "Bellion", image: "https://i.ytimg.com/vi/y8eJcRgr5nE/maxresdefault.jpg", unlockLevel: 120, stats: "LV.120 | Monarch's Right Hand" }
 ];
+
 function updateProgress() {
     const oldLevel = currentLevel;
     currentLevel = Math.floor(totalXP / 100) + 1;
