@@ -114,7 +114,7 @@ function validateQuest() {
         totalXP += 400; // 4 levels por dia
         updateProgress();
         showModal('QUEST COMPLETE!', '🎉 +4 Levels Gained! ⚡<br>Return tomorrow for new quest!');
-        localStorage.setItem('lastComplete', new Date());
+        localStorage.setItem('lastComplete', new Date().toISOString());
         lockInputs();
     } else {
         showModal('QUEST FAILED!', '⚠️ STATS DECREASED!');
@@ -153,7 +153,9 @@ function checkDailyReset() {
     if (lastComplete) {
         const lastDate = new Date(lastComplete);
         const now = new Date();
-        if (now.toDateString() !== lastDate.toDateString()) {
+        if (now.toDateString() === lastDate.toDateString()) {
+            lockInputs();
+        } else {
             document.getElementById('verifyBtn').disabled = false;
             document.getElementById('verifyBtn').textContent = 'VERIFY QUEST';
             document.querySelectorAll('.goal-item input').forEach(input => {
@@ -161,8 +163,6 @@ function checkDailyReset() {
                 input.value = 0;
                 input.style.borderColor = 'var(--neon-purple)';
             });
-        } else {
-            lockInputs();
         }
     }
 }
