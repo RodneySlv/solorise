@@ -1,0 +1,316 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@400;700&display=swap');
+
+:root {
+    --neon-blue: #00d9ff;
+    --neon-purple: #bd00ff;
+    --dark-bg: #0a1428;
+    --warning-red: #ff4444;
+    --cyber-gradient: linear-gradient(45deg, #00172e, #003b5c);
+}
+
+body {
+    background: var(--cyber-gradient);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.cyber-container {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(10, 20, 40, 0.95);
+    border: 2px solid var(--neon-blue);
+    border-radius: 15px;
+    box-shadow: 0 0 50px rgba(0, 217, 255, 0.3);
+    overflow: hidden;
+    position: relative;
+    transition: box-shadow 0.5s ease;
+}
+
+.cyber-container.active {
+    box-shadow: 0 0 50px rgba(189, 0, 255, 0.7), 0 0 100px rgba(0, 0, 0, 0.7);
+}
+
+.tab-container {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid var(--neon-blue);
+    flex-wrap: wrap;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    color: var(--neon-blue);
+    font-family: 'Orbitron', sans-serif;
+    transition: all 0.3s;
+    position: relative;
+    min-width: 80px;
+}
+
+.tab-button.active {
+    background: rgba(0, 217, 255, 0.1);
+    color: white;
+    text-shadow: 0 0 10px var(--neon-blue);
+}
+
+.tab-content {
+    padding: 20px;
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.quest-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.quest-header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2em;
+    color: var(--neon-blue);
+    text-shadow: 0 0 15px var(--neon-blue);
+    margin: 10px 0;
+    letter-spacing: 2px;
+}
+
+.warning {
+    color: var(--warning-red);
+    text-shadow: 0 0 10px var(--warning-red);
+    font-size: 0.8em;
+    margin-top: 10px;
+}
+
+.goals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.goal-item {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--neon-blue);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    position: relative;
+}
+
+.goal-item input {
+    width: 80%;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--neon-purple);
+    color: var(--neon-purple);
+    font-size: 0.9em;
+    text-align: center;
+    padding: 6px;
+    margin-top: 5px;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.time-container {
+    text-align: center;
+    margin: 25px 0;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid var(--neon-blue);
+}
+
+#timeLeft {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5em;
+    color: var(--neon-blue);
+    text-shadow: 0 0 15px var(--neon-blue);
+    margin: 10px 0;
+}
+
+.neon-btn {
+    background: none;
+    border: 2px solid var(--neon-blue);
+    color: var(--neon-blue);
+    padding: 10px 20px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 6px;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.neon-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: var(--warning-red);
+}
+
+.progress-container {
+    margin-top: 25px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid var(--neon-blue);
+}
+
+.progress-bar {
+    height: 18px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    margin: 12px 0;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+    width: 0;
+    border-radius: 8px;
+    transition: width 0.5s;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat-item {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--neon-blue);
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+}
+
+.stat-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2em;
+    color: var(--neon-blue);
+    margin: 10px 0;
+}
+
+.shadow-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    margin: 15px 0;
+    min-height: 150px;
+}
+
+.shadow-card {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--neon-purple);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    transition: transform 0.3s;
+    animation: shadowAppear 0.5s ease-out;
+}
+
+@keyframes shadowAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.shadow-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    border: 2px solid var(--neon-blue);
+    object-fit: cover;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.cyber-modal {
+    background: rgba(10, 20, 40, 0.97);
+    border: 2px solid var(--neon-blue);
+    border-radius: 15px;
+    padding: 20px;
+    max-width: 300px;
+    text-align: center;
+    position: relative;
+    animation: modalAppear 0.3s ease-out;
+}
+
+@keyframes modalAppear {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--neon-blue);
+    margin-bottom: 15px;
+}
+
+.modal-content {
+    margin: 15px 0;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: var(--neon-blue);
+}
+
+@media (max-width: 480px) {
+    .tab-button {
+        font-size: 0.8em;
+        padding: 8px;
+    }
+
+    .quest-header h1 {
+        font-size: 1.5em;
+    }
+
+    .goals-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .shadow-grid {
+        grid-template-columns: 1fr;
+    }
+}
